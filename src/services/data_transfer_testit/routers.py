@@ -2,8 +2,8 @@ from typing import Optional
 
 from fastapi import APIRouter, File, UploadFile, Form, HTTPException
 
-from src.model.schemas import QaseData
-from src.service.data_transfer_testit.scripts import data_from_qase, send_data_to_testit
+from src.schemas.schemas import QaseData
+from src.services.data_transfer_testit.scripts import data_from_qase, send_data_to_testit
 
 router_migration = APIRouter(
     prefix="/migration",

@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.config import Settings
-from src.service.data_transfer_testit.routers import router_migration
+from src.services.data_transfer_testit.routers import router_migration
 
 app = FastAPI()
 
