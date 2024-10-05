@@ -1,8 +1,10 @@
+import logging
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.config import Settings
-from src.service.migration import router_migration
+from src.service.data_transfer_testit.routers import router_migration
 
 app = FastAPI()
 
@@ -17,6 +19,13 @@ app.add_middleware(
 app.include_router(router_migration)
 
 settings = Settings()
+
+logging.basicConfig(
+    level=logging.INFO,  # Уровень логирования
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
+
+logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
     import uvicorn
