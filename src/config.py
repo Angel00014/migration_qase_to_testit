@@ -1,21 +1,14 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from pydantic_settings import BaseSettings
+from dotenv import load_dotenv
 
-from src.service.migration import router_migration
+load_dotenv()
 
-app = FastAPI()
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+class Settings(BaseSettings):
+    host_system: str
+    port_system: int
+    log_level: str
+    access_log: bool
 
-app.include_router(router_migration)
-
-if __name__ == "__main__":
-    import uvicorn
-
-    uvicorn.run(app, host="127.0.0.1", port=8002, log_level="debug", access_log=True)
+    class Config:
+        env_file = ".env"
