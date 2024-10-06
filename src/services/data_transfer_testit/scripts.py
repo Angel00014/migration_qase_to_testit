@@ -8,6 +8,11 @@ from fastapi import UploadFile, HTTPException
 
 
 def formation_steps(test_run_steps):
+    """
+    Формирование шагов для TestIt по данным TestCase из QASE
+    :param test_run_steps: Массив шагов из QASE
+    :return: Массив шагов для TestCase в формате TestIt
+    """
     testit_testcase_steps = []
 
     for step in test_run_steps:
@@ -23,6 +28,16 @@ def formation_steps(test_run_steps):
 
 
 def data_from_qase(qase_data):
+    """
+    Получение и обработка данных из Qase и запись их в json файл
+    :param qase_data: Данные Qase(Набор кейсов,
+                                  API токен доступа из QASE,
+                                  URL API из QASE,
+                                  имя проекта в QASE,
+                                  ID проекта в TESTIT,
+                                  ID секции  в TESTIT)
+    :return: Json файл с данными для отправки в TestIt.
+    """
     headers_qase = {
         "Token": f"{qase_data.qase_token}",
         "accept": "application/json"}
@@ -94,6 +109,14 @@ def data_from_qase(qase_data):
 
 
 async def send_data_to_testit(file: UploadFile, testit_token, testit_cookies, testit_url):
+    """
+    Создание TestCase в TestIt по данным из json файла.
+    :param testit_token : API токен доступа в TestIt.
+    :param testit_cookies : Cookies для авторизации в TestIt.
+    :param testit_url : URL API в TestIt.
+    :param file : Json файл с данными для отправки в TestIt полученный в ответе на запрос /from_qase_to_testit.
+    :return: Список id созданных TestCase в TestIt.
+    """
     testit_testcase_ids = []
 
     contents = await file.read()

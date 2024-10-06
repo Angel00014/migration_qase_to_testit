@@ -13,6 +13,16 @@ router_migration = APIRouter(
 
 @router_migration.post("/from_qase_to_testit")
 def get_prepare_data_from_qase(qase_data: QaseData):
+    """
+    Метод для получения и обработки данных по TestCase из Qase и запись их в json файл для отправки в TestIt.
+    :param qase_data: Данные Qase(Набор кейсов,
+                                  API токен доступа из QASE,
+                                  URL API из QASE,
+                                  имя проекта в QASE,
+                                  ID проекта в TESTIT,
+                                  ID секции  в TESTIT)
+    :return: Json файл с данными для отправки в TestIt.
+    """
     try:
         return data_from_qase(qase_data)
     except Exception as e:
@@ -25,6 +35,14 @@ async def load_prepare_data_to_testit(
         testit_cookies: Optional[str] = Form(None),
         testit_url: str = Form(...),
         file: UploadFile = File(...)):
+    '''
+    Метод для создание TestCase в TestIt по данным из json файла.
+    :param testit_token : API токен доступа в TestIt.
+    :param testit_cookies : Cookies для авторизации в TestIt.
+    :param testit_url : URL API в TestIt.
+    :param file : Json файл с данными для отправки в TestIt полученный в ответе на запрос /from_qase_to_testit.
+    :return: Список id созданных TestCase в TestIt.
+    '''
     try:
         return await send_data_to_testit(file, testit_token, testit_cookies, testit_url)
     except Exception as e:
